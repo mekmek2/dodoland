@@ -111,10 +111,19 @@
       }
     }
 
+    function getLocalDateTimeString(date) {
+      const pad = n => String(n).padStart(2, '0');
+      const yyyy = date.getFullYear();
+      const mm = pad(date.getMonth() + 1);
+      const dd = pad(date.getDate());
+      const hh = pad(date.getHours());
+      const min = pad(date.getMinutes());
+      return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+    }
+
     // 초기 시각 세팅
     const now = new Date();
-    const localDateTimeStr = now.toISOString().slice(0, 16);
-    datetimePicker.value = localDateTimeStr;
+    datetimePicker.value = getLocalDateTimeString(now);
     renderMarkers(now);
 
     // 날짜/시간 변경 시 다시 그리기
