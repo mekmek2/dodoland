@@ -63,8 +63,7 @@
   </header>
 
   <div id="controls">
-    <label for="datePicker">날짜 선택: </label>
-    <input type="date" id="datePicker" />
+    <input type="datetime-local" id="datetimePicker" />
   </div>
 
   <div id="map-container"></div>
@@ -84,16 +83,16 @@
     ];
 
     const container = document.getElementById('map-container');
-    const datePicker = document.getElementById('datePicker');
+    const datetimePicker = document.getElementById('datetimePicker');
 
     const base = new Date('2025-04-21T07:00:00');
 
-    function renderMarkers(forDate) {
+    function renderMarkers(selectedDate) {
       container.innerHTML = '';
-      const dayOffset = Math.floor((forDate - base) / (1000 * 60 * 60 * 24));
+      const dayOffset = Math.floor((selectedDate - base) / (1000 * 60 * 60 * 24));
 
       for (let i = 0; i < 10; i++) {
-        const posIndex = (i + dayOffset + 1000) % 10; // +1000 to avoid negative modulus
+        const posIndex = (i + dayOffset + 1000) % 10;
         const { x, y } = positions[posIndex];
 
         const marker = document.createElement('div');
@@ -112,15 +111,15 @@
       }
     }
 
-    // 초기화 시 오늘 날짜로 설정
-    const today = new Date();
-    const todayDateStr = today.toISOString().split('T')[0];
-    datePicker.value = todayDateStr;
-    renderMarkers(today);
+    // 초기 시각 세팅
+    const now = new Date();
+    const localDateTimeStr = now.toISOString().slice(0, 16);
+    datetimePicker.value = localDateTimeStr;
+    renderMarkers(now);
 
-    // 날짜 변경 시 마커 다시 그리기
-    datePicker.addEventListener('change', (e) => {
-      const selectedDate = new Date(e.target.value + 'T07:00:00');
+    // 날짜/시간 변경 시 다시 그리기
+    datetimePicker.addEventListener('change', (e) => {
+      const selectedDate = new Date(e.target.value);
       renderMarkers(selectedDate);
     });
   </script>
